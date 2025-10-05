@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../lib/domain.php';
+require_once __DIR__ . '/../lib/metrics.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/auth.php';
 
@@ -27,12 +30,21 @@ $routes = [
 
     // super admin area
     'sa_requests'  => __DIR__ . '/../modules/super_admin/requests.php',
+    
+
 ];
 
 // Actions that should not be wrapped (they redirect or echo minimal text)
 $raw_actions = [
     'role_switch'  => __DIR__ . '/../modules/auth/role_switch.php',
     'logout'       => __DIR__ . '/../modules/auth/logout.php',
+     'region_save' => __DIR__ . '/../modules/world/region_save.php',
+  'zone_save'   => __DIR__ . '/../modules/world/zone_save.php',
+  'event_save'  => __DIR__ . '/../modules/infection/event_save.php',
+  'alert_ack'   => __DIR__ . '/../modules/alerts/ack.php',
+  'alert_close' => __DIR__ . '/../modules/alerts/close.php',
+  'survivor_save' => __DIR__ . '/../modules/survivors/survivor_save.php',
+
 ];
 
 // If it's a raw action, just run and exit

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../config/db.php';
 require_once __DIR__ . '/../../config/auth.php';
 require_login();
-ensure_acting_role($pdo, 'super_admin');
+ensure_acting_role($pdo, 'admin');
 
 $reqId   = (int)($_POST['req_id'] ?? 0);
 $userId  = (int)($_POST['user_id'] ?? 0);

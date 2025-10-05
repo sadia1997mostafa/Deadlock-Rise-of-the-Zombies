@@ -16,7 +16,7 @@ function current_user_id(): ?int {
 }
 
 function set_acting_role(string $roleKey): void {
-    // 'viewer' or a roles.role_key (e.g., 'ops_admin')
+    // 'viewer' or a roles.role_key (e.g., 'admin')
     $_SESSION['acting_role'] = $roleKey;
 }
 
@@ -55,7 +55,7 @@ function is_super_admin(PDO $pdo, ?int $userId): bool {
     $sql = "SELECT COUNT(*)
             FROM user_roles ur
             JOIN roles r ON ur.role_id = r.id
-            WHERE ur.user_id = ? AND r.role_key = 'super_admin'";
+            WHERE ur.user_id = ? AND r.role_key = 'admin'";
     $st = $pdo->prepare($sql);
     $st->execute([$userId]);
     return (int)$st->fetchColumn() > 0;

@@ -15,13 +15,8 @@ if (function_exists('is_logged_in') && is_logged_in()) {
 
 // Map role_key -> specific home view
 $map = [
-    'super_admin'       => __DIR__ . '/home_super_admin.php',
-    'ops_admin'         => __DIR__ . '/home_ops_admin.php',
+    'admin'             => __DIR__ . '/home_admin.php',
     'mission_commander' => __DIR__ . '/home_mission_commander.php',
-    'inventory_manager' => __DIR__ . '/home_inventory_manager.php',
-    'epidemiologist'    => __DIR__ . '/home_epidemiologist.php',
-    'watch_officer'     => __DIR__ . '/home_watch_officer.php',
-    'data_clerk'        => __DIR__ . '/home_data_clerk.php',
     'viewer'            => __DIR__ . '/home_viewer.php', // public default
 ];
 

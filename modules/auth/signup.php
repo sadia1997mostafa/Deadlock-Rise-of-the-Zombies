@@ -2,7 +2,7 @@
 $msg = $err = '';
 $roles = $pdo->query("SELECT id, role_key, role_name
                       FROM roles
-                      WHERE role_key <> 'super_admin'
+                      WHERE role_key IN ('mission_commander')
                       ORDER BY role_name")->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

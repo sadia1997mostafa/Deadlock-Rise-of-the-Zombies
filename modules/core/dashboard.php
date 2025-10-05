@@ -6,7 +6,7 @@ $acting = get_acting_role();
 <div class="badge">You are acting as: <b><?= htmlspecialchars($acting) ?></b></div>
 <p style="margin-top:10px">Placeholder dashboard. Access flow only (as requested).</p>
 
-<?php if ($acting === 'super_admin'): ?>
+<?php if ($acting === 'admin'): ?>
   <div class="list" style="margin-top:16px">
     <a class="item" href="/zom/public/?page=sa_requests">Manage Role Requests</a>
   </div>

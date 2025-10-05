@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $roleKeys = array_values(array_unique(array_map(fn($row) => $row['role_key'], $roleRows)));
 
         // 3) Decide acting role + redirect
-        if (in_array('super_admin', $roleKeys, true)) {
-            set_acting_role('super_admin');
+        if (in_array('admin', $roleKeys, true)) {
+            set_acting_role('admin');
             header("Location: ?page=home");
             exit;
         }

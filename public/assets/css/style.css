@@ -38,3 +38,16 @@ hr{border:0; border-top:1px solid #233043; margin:14px 0}
 .alert{padding:.7rem 1rem; border:1px solid #394b61; border-radius:12px; background:#0c161f; color:#cfe1ff}
 .success{border-color:#2f5e3a; background:#0f1c12; color:#baf7bf}
 .error{border-color:#6a2a2a; background:#1a0f12; color:#ffbdbd}
+
+
+
+.kpis .tile{flex:1 1 160px;background:#0f141a;border:1px solid #1f2a36;border-radius:12px;padding:12px}
+.tile-title{color:#97a3b6;font-size:12px;margin-bottom:6px}
+.tile-value{font-size:28px;font-weight:700;color:#e6edf3}
+.card-like{background:#0b0f14;border:1px solid #1f2a36;border-radius:12px;padding:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:8px 10px;border-bottom:1px solid #1f2a36}
+.table th{text-align:left;color:#97a3b6;font-weight:600}
+.alert.warn{background:#15110a;border:1px solid #3c2a08;color:#f7d28c;border-radius:10px;padding:10px 12px}
+.alert.warn b { color:#f7d28c; }
+.alert.warn .ack { color:#8cd2f7; }

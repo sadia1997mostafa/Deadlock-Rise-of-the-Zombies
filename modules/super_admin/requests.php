@@ -1,6 +1,6 @@
 <?php
 require_login();
-ensure_acting_role($pdo, 'super_admin');
+ensure_acting_role($pdo, 'admin');
 
 $sql = "SELECT rr.id as req_id, u.id as user_id, u.name, u.email, r.role_name, r.role_key, rr.requested_at
         FROM role_requests rr

@@ -1,7 +1,7 @@
 -- DB
-CREATE DATABASE IF NOT EXISTS zombie_outbreak
+CREATE DATABASE IF NOT EXISTS zom
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE zombie_outbreak;
+USE zom;
 
 -- Users
 CREATE TABLE IF NOT EXISTS users (
@@ -49,10 +49,5 @@ CREATE TABLE IF NOT EXISTS user_roles (
 
 -- Seed controlled roles (Viewer is always allowed implicitly)
 INSERT IGNORE INTO roles (role_key, role_name) VALUES
-('super_admin','Super Admin'),
-('ops_admin','Ops Admin'),
-('mission_commander','Mission Commander'),
-('inventory_manager','Inventory Manager'),
-('epidemiologist','Epidemiologist'),
-('watch_officer','Watch Officer'),
-('data_clerk','Data Clerk');
+('admin','Admin'),
+('mission_commander','Mission Commander');
