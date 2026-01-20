@@ -1,6 +1,6 @@
 <?php
 // modules/auth/login.php
-// Login + smart redirect to the correct home page based on roles.
+// Simplified login: authenticates user and sets acting role based on ADMIN_EMAIL.
 
 $err = '';
 
@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass  = $_POST['password'] ?? '';
 
     // 1) Authenticate
-    $stmt = $pdo->prepare("SELECT id, password_hash FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT id, password_hash, email FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
@@ -17,50 +17,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Logged in
         $_SESSION['user_id'] = (int)$user['id'];
 
-        // 2) Fetch roles for this user
-        $rolesStmt = $pdo->prepare("
-            SELECT r.role_key
-            FROM user_roles ur
-            JOIN roles r ON ur.role_id = r.id
-            WHERE ur.user_id = ?
-        ");
-        $rolesStmt->execute([(int)$user['id']]);
-        $roleRows = $rolesStmt->fetchAll();
-        $roleKeys = array_values(array_unique(array_map(fn($row) => $row['role_key'], $roleRows)));
-
-        // 3) Decide acting role + redirect
-        if (in_array('super_admin', $roleKeys, true)) {
-            set_acting_role('super_admin');
-            header("Location: ?page=home");
-            exit;
-        }
-
-        if (count($roleKeys) === 0) {
-            // No granted roles -> viewer
+        // Decide acting role by email: configured ADMIN_EMAIL is admin; everyone else is viewer
+        $emailLower = strtolower($user['email'] ?? '');
+        if ($emailLower === strtolower(ADMIN_EMAIL)) {
+            set_acting_role('admin');
+        } else {
             set_acting_role('viewer');
-            header("Location: ?page=home");
-            exit;
         }
 
-        if (count($roleKeys) === 1) {
-            // Exactly one role -> act as that role
-            set_acting_role($roleKeys[0]);
-            header("Location: ?page=home");
-            exit;
-        }
-
-        // Multiple roles -> let the user choose
-        set_acting_role('viewer'); // safe default until they pick
-        header("Location: ?page=role_select");
+        header("Location: ?page=home");
         exit;
-
     } else {
         $err = "Invalid email or password.";
     }
 }
 ?>
-<div class="logo"><span class="dot"></span><h1>Zombie Outbreak Control</h1></div>
-<small class="muted">Welcome back. Survive another day.</small>
+<div class="logo"><span class="dot"></span><h1>Virus Outbreak Control</h1></div>
+<small class="muted">Welcome back. Help stop the spread.</small>
 
 <?php if($err): ?>
   <div class="alert error"><?= htmlspecialchars($err) ?></div>

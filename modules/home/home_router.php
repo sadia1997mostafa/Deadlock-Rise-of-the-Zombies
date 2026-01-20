@@ -14,18 +14,14 @@ if (function_exists('is_logged_in') && is_logged_in()) {
 }
 
 // Map role_key -> specific home view
+// Only the simplified roles used by this project
 $map = [
-    'super_admin'       => __DIR__ . '/home_super_admin.php',
-    'ops_admin'         => __DIR__ . '/home_ops_admin.php',
-    'mission_commander' => __DIR__ . '/home_mission_commander.php',
-    'inventory_manager' => __DIR__ . '/home_inventory_manager.php',
-    'epidemiologist'    => __DIR__ . '/home_epidemiologist.php',
-    'watch_officer'     => __DIR__ . '/home_watch_officer.php',
-    'data_clerk'        => __DIR__ . '/home_data_clerk.php',
+    'admin'             => __DIR__ . '/home_super_admin.php',
+    // mission_commander role removed; doctors use the doctor flow within viewer/home or admin pages
     'viewer'            => __DIR__ . '/home_viewer.php', // public default
 ];
 
-// Super Admin preview override: ?page=home&as=<role_key>
+// Admin preview override: ?page=home&as=<role_key>
 if (is_logged_in()
     && function_exists('is_super_admin') && function_exists('current_user_id')
     && is_super_admin($pdo, current_user_id())

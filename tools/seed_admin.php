@@ -27,10 +27,6 @@ try {
     $st->execute([$name,$email,$hash]);
     $uid = (int)$pdo->lastInsertId();
 
-    $rid = (int)$pdo->query("SELECT id FROM roles WHERE role_key='super_admin'")->fetchColumn();
-    $st = $pdo->prepare("INSERT INTO user_roles (user_id, role_id, assigned_by) VALUES (?,?,NULL)");
-    $st->execute([$uid, $rid]);
-
     $pdo->commit();
     echo "<div style='font-family:system-ui;color:#e5e7eb;background:#0b0f14;padding:20px'>Super Admin created ✅ — <b>$email</b><br><br>
           <a style='color:#b0ff6a' href='/zom/public/?page=login'>Go to Login</a><br><br>

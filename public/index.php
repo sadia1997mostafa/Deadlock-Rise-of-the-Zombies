@@ -1,63 +1,112 @@
 <?php
+require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../lib/domain.php';
+require_once __DIR__ . '/../lib/metrics.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/auth.php';
 
-/**
- * Simple router + layout.
- * Includes inner views from /modules/... based on ?page=
- * and wraps them in a single consistent layout (card + CSS).
- *
- * Folder-name independent: all links use relative URLs (?page=...).
- */
 
 $page = $_GET['page'] ?? 'login';
 
-// Map routes -> module file paths
+
 $routes = [
     // authentication
     'login'        => __DIR__ . '/../modules/auth/login.php',
-    'signup'       => __DIR__ . '/../modules/auth/signup.php',
-    'role_select'  => __DIR__ . '/../modules/auth/role_select.php',
+  'signup'       => __DIR__ . '/../modules/auth/signup.php',
 
-    // role-specific home router (7 roles + public viewer)
+    
     'home'         => __DIR__ . '/../modules/home/home_router.php',
 
-    // optional generic dashboard (if you still need it)
-    'dashboard'    => __DIR__ . '/../modules/core/dashboard.php',
+ 
 
-    // super admin area
-    'sa_requests'  => __DIR__ . '/../modules/super_admin/requests.php',
+    // super admin area (role-request pages removed)
+  // campaigns
+  'campaigns'      => __DIR__ . '/../modules/campaigns/list.php',
+  'campaign_create'=> __DIR__ . '/../modules/campaigns/create.php',
+  'campaign_view'  => __DIR__ . '/../modules/campaigns/view.php',
+
+  // user panel
+  'user_panel'     => __DIR__ . '/../modules/user/panel.php',
+  'user_sql_runner' => __DIR__ . '/../modules/user/sql_runner.php',
+
+  // user requests (rendered in layout)
+  'ambulance_request' => __DIR__ . '/../modules/requests/ambulance_request.php',
+  'icu_request'       => __DIR__ . '/../modules/requests/icu_request.php',
+
+    // admin tools
+    'admin_zones'   => __DIR__ . '/../modules/admin/zones.php',
+    'admin_vaccines'=> __DIR__ . '/../modules/admin/vaccines.php',
+  'sql_examples'  => __DIR__ . '/../modules/admin/admin_sql.php',
+  'admin_alerts'  => __DIR__ . '/../modules/admin/alerts.php',
+  
+  'admin_ambulance_requests' => __DIR__ . '/../modules/admin/ambulance_requests.php',
+  'admin_sql_runner' => __DIR__ . '/../modules/admin/sql_runner.php',
+  'admin_icu_requests' => __DIR__ . '/../modules/admin/icu_requests.php',
+    
+
 ];
 
-// Actions that should not be wrapped (they redirect or echo minimal text)
+
 $raw_actions = [
-    'role_switch'  => __DIR__ . '/../modules/auth/role_switch.php',
     'logout'       => __DIR__ . '/../modules/auth/logout.php',
+     'region_save' => __DIR__ . '/../modules/world/region_save.php',
+  'zone_save'   => __DIR__ . '/../modules/world/zone_save.php',
+  'event_save'  => __DIR__ . '/../modules/infection/event_save.php',
+  'alert_ack'   => __DIR__ . '/../modules/alerts/ack.php',
+  'alert_close' => __DIR__ . '/../modules/alerts/close.php',
+  'admin_alert_update_status' => __DIR__ . '/../modules/admin/alert_update_status.php',
+  
+  'admin_mark_infected' => __DIR__ . '/../modules/admin/mark_infected.php',
+  'admin_update_infected_status' => __DIR__ . '/../modules/admin/update_infected_status.php',
+ 
+  'admin_ambulance_handle' => __DIR__ . '/../modules/admin/ambulance_handle.php',
+  'admin_icu_handle' => __DIR__ . '/../modules/admin/icu_handle.php',
+
+  // user action endpoints
+  'user_cancel_request' => __DIR__ . '/../modules/user/cancel_request.php',
+  'user_auto_register'  => __DIR__ . '/../modules/user/auto_register.php',
+  'user_export_requests'=> __DIR__ . '/../modules/user/export_requests.php',
+  'user_bulk_register'  => __DIR__ . '/../modules/user/bulk_register.php',
+  'self_status_action'  => __DIR__ . '/../modules/home/self_status_action.php',
+
+  
+  // role request handlers removed
+
+
+  
+
 ];
 
-// If it's a raw action, just run and exit
+
 if (isset($raw_actions[$page])) {
     require $raw_actions[$page];
     exit;
 }
 
-// Choose which inner view to load, default to login
+
 $view = $routes[$page] ?? $routes['login'];
 
-// ==== layout rendering ====
+
 ob_start();
-require $view;           // this echoes the inner content (no <html> wrapper)
+require $view;           
 $content = ob_get_clean();
 ?>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Deadlock – Rise of the Zombies</title>
-  <link rel="stylesheet" href="assets/css/style.css"><!-- relative path -->
+  <title>Deadlock – Virus Outbreak</title>
+  <?php $cssv = file_exists(__DIR__.'/assets/css/style.css') ? filemtime(__DIR__.'/assets/css/style.css') : time(); ?>
+  <link rel="stylesheet" href="assets/css/style.css?v=<?= $cssv ?>">
+  <style>
+    .site-full, .card, .card-like, .container { width: 100% !important; max-width: none !important; margin: 0 !important; padding-left: 24px !important; padding-right: 24px !important; }
+    .table { width: 100% !important; }
+    .table .btn { width: auto !important; display:inline-block !important; }
+  </style>
 </head>
 <body>
-  <div class="card">
+
+  <div class="site-full">
     <?= $content ?>
   </div>
 </body>
